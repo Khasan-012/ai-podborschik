@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Какой ИИ выбрать?</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0b0d14;
+    --card: #151827;
+    --card2: #1b1f33;
+    --accent: #7c5cff;
+    --accent2: #00d4ff;
+    --text: #eef0ff;
+    --muted: #9aa0c3;
+    --border: rgba(124, 92, 255, 0.25);
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -10%, #1e2140 0%, var(--bg) 60%);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 20px 80px;
+  }
+
+  .logo {
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 44px);
+    text-align: center;
+    line-height: 1.2;
+    max-width: 700px;
+    background: linear-gradient(90deg, #fff, var(--accent2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 36px;
+    font-size: 16px;
+  }
+
+  .input-wrap {
+    width: 100%;
+    max-width: 640px;
+    position: relative;
+  }
+
+  input#goal {
+    width: 100%;
+    padding: 20px 64px 20px 24px;
+    font-size: 17px;
+    color: var(--text);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+
+  input#goal::placeholder { color: #6b7194; }
+
+  input#goal:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(124, 92, 255, 0.15);
+  }
+
+  .go-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+    transition: transform .15s, opacity .15s;
+  }
+
+  .go-btn:hover { transform: translateY(-50%) scale(1.06); }
+  .go-btn:disabled { opacity: .4; cursor: default; }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+    max-width: 640px;
+  }
+
+  .chip {
+    padding: 8px 14px;
+    font-size: 13px;
+    color: var(--muted);
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+
+  .chip:hover {
+    color: #fff;
+    border-color: var(--accent);
+    background: var(--card2);
+  }
+
+  #result { width: 100%; max-width: 640px; margin-top: 40px; }
+
+  .best {
+    background: linear-gradient(160deg, var(--card2), var(--card));
+    border: 1px solid var(--accent);
+    border-radius: 22px;
+    padding: 28px;
+    animation: rise .45s ease both;
+    box-shadow: 0 20px 60px rgba(124, 92, 255, 0.15);
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    padding: 6px 12px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+
+  .best h2 { font-size: 30px; margin-bottom: 6px; }
+  .best .tagline { color: var(--accent2); font-size: 15px; margin-bottom: 14px; }
+  .best p.why { color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+
+  .open-btn {
+    display: inline-block;
+    padding: 12px 22px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    text-decoration: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 12px;
+    transition: transform .15s;
+  }
+
+  .open-btn:hover { transform: scale(1.04); }
+
+  .section-title {
+    margin: 32px 0 14px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .alt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px 20px;
+    margin-bottom: 10px;
+    animation: rise .45s ease both;
+  }
+
+  .alt .name { font-weight: 700; font-size: 16px; }
+  .alt .desc { color: var(--muted); font-size: 13px; margin-top: 3px; }
+  .alt a {
+    color: var(--accent2);
+    text-decoration: none;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .alt a:hover { text-decoration: underline; }
+
+  .hint {
+    text-align: center;
+    color: var(--muted);
+    margin-top: 28px;
+    font-size: 14px;
+    animation: rise .45s ease both;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  footer {
+    margin-top: auto;
+    padding-top: 60px;
+    color: #565c80;
+    font-size: 12px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+  <div class="logo">✦ AI-ПОДБОРЩИК</div>
+  <h1>Введите, для чего вам нужен ИИ</h1>
+  <p class="subtitle">Опишите свою задачу — покажем самый подходящий ИИ-инструмент</p>
+
+  <div class="input-wrap">
+    <input id="goal" type="text" placeholder="Например: писать код, рисовать картинки, переводить тексты…" autocomplete="off">
+    <button class="go-btn" id="goBtn" title="Найти">→</button>
+  </div>
+
+  <div class="chips">
+    <button class="chip">📝 Писать тексты</button>
+    <button class="chip">💻 Писать код</button>
+    <button class="chip">🎨 Создавать картинки</button>
+    <button class="chip">🎬 Делать видео</button>
+    <button class="chip">🎵 Создавать музыку</button>
+    <button class="chip">🌍 Переводить</button>
+    <button class="chip">📚 Учиться</button>
+    <button class="chip">🔍 Искать информацию</button>
+    <button class="chip">🎙 Озвучка голосом</button>
+    <button class="chip">📊 Анализ данных</button>
+    <button class="chip">🖼 Презентации</button>
+    <button class="chip">📱 Контент для соцсетей</button>
+  </div>
+
+  <div id="result"></div>
+
+  <footer>Рекомендации носят информационный характер · 2026</footer>
+
+<script>
+  const TOOLS = [
+    {
+      name: "Claude", url: "https://claude.ai",
+      tagline: "Лучший для кода, текстов и умных разговоров",
+      keywords: ["код", "программ", "разработ", "скрипт", "python", "js", "сайт", "приложен", "текст", "стать", "письм", "сочинен", "эссе", "редактир", "перефраз", "объясн", "учеб", "универ", "домашк", "курсов", "диплом", "резюме", "документ", "анализ текст", "рассказ", "книг"],
+      why: "Claude отлично пишет и объясняет код, хорошо справляется с длинными текстами и документами, даёт развёрнутые и аккуратные ответы. Универсальный выбор №1 для работы с текстом и программированием.",
+      alts: ["ChatGPT", "Gemini"]
+    },
+    {
+      name: "ChatGPT", url: "https://chatgpt.com",
+      tagline: "Универсальный ассистент на все случаи жизни",
+      keywords: ["универсальн", "всё", "вопрос", "спросить", "поговор", "пообща", "совет", "помощ", "бытов", "план", "расписан", "идеи", "придума", "мозг", "объясн", "просто", "нович", "разбор"],
+      why: "ChatGPT — самый универсальный ИИ: отвечает на любые вопросы, помогает планировать, придумывает идеи, объясняет сложное простыми словами. Если задача размытая — начните с него.",
+      alts: ["Claude", "Gemini"]
+    },
+    {
+      name: "Perplexity", url: "https://perplexity.ai",
+      tagline: "ИИ-поиск с ссылками на источники",
+      keywords: ["поиск", "найди", "искать", "информаци", "новост", "актуальн", "исследован", "факт", "источник", "справк", "статистик", "где", "когда", "кто такой"],
+      why: "Perplexity ищет в интернете в реальном времени и отвечает со ссылками на источники. Идеален, когда нужна свежая и проверяемая информация, а не ответ «по памяти».",
+      alts: ["Gemini", "ChatGPT"]
+    },
+    {
+      name: "Midjourney", url: "https://midjourney.com",
+      tagline: "Топовые художественные изображения",
+      keywords: ["картинк", "рису", "изображ", "арт", "иллюстра", "дизайн", "логотип", "обложк", "концепт", "фото реалист", "эстетик", "wallpaper", "обои"],
+      why: "Midjourney создаёт самые красивые и художественные изображения по текстовому описанию. Выбор №1 для артов, иллюстраций и концептов.",
+      alts: ["FLUX", "DALL·E 3", "Ideogram"]
+    },
+    {
+      name: "FLUX", url: "https://flux-ai.io",
+      tagline: "Реалистичный и бесплатный генератор картинок",
+      keywords: ["бесплатн картин", "реалист", "фото", "текст на картин", "надпис", "открытк", "быстрый рису"],
+      why: "FLUX даёт фотореалистичные изображения и хорошо рисует текст/надписи на картинках. Есть бесплатные варианты использования.",
+      alts: ["Midjourney", "Stable Diffusion"]
+    },
+    {
+      name: "Sora", url: "https://sora.com",
+      tagline: "Генерация видео по текстовому описанию",
+      keywords: ["видео", "ролик", "клип", "анимац", "фильм", "сгенерируй видео", "movie", "shorts", "рилс"],
+      why: "Sora от OpenAI создаёт видео целиком по текстовому описанию — с движением, светом и сценами. Топовый выбор для генеративного видео.",
+      alts: ["Runway", "Kling AI"]
+    },
+    {
+      name: "Runway", url: "https://runwayml.com",
+      tagline: "Профессиональное ИИ-видео и монтаж",
+      keywords: ["монтаж", "видео редактор", "видео эффект", "видео обработк", "удалить фон видео", "видео инструмент"],
+      why: "Runway — полноценная студия ИИ-видео: генерация, редактирование, удаление фона, эффекты. Выбор для тех, кто работает с видео серьёзно.",
+      alts: ["Sora", "Kling AI"]
+    },
+    {
+      name: "Suno", url: "https://suno.com",
+      tagline: "Создание песен и музыки по описанию",
+      keywords: ["музык", "песн", "трек", "мелоди", "бит", "инструментал", "спой", "пой", "композиц"],
+      why: "Suno генерирует полноценные песни с вокалом и текстом в любом жанре за минуту. Лучший ИИ для музыки.",
+      alts: ["Udio"]
+    },
+    {
+      name: "ElevenLabs", url: "https://elevenlabs.io",
+      tagline: "Реалистичная озвучка и клонирование голоса",
+      keywords: ["озвуч", "голос", "диктор", "аудио книг", "текст в речь", "озвон", "клонирован голос", "подкаст озвуч"],
+      why: "ElevenLabs делает самую реалистичную озвучку текста на многих языках, включая русский, и умеет клонировать голос.",
+      alts: ["Speechify"]
+    },
+    {
+      name: "DeepL", url: "https://deepl.com",
+      tagline: "Самый точный перевод текстов",
+      keywords: ["перевод", "перевест", "переведи", "translate", "язык"],
+      why: "DeepL переводит точнее всех, сохраняя стиль и смысл текста. Выбор №1 для перевода документов и статей.",
+      alts: ["Google Translate", "ChatGPT"]
+    },
+    {
+      name: "Gemini", url: "https://gemini.google.com",
+      tagline: "ИИ от Google с доступом к актуальным данным",
+      keywords: ["гугл", "google", "почт", "gmail", "документ google", "таблиц google", "android", "актуальн"],
+      why: "Gemini глубоко интегрирован с сервисами Google (Gmail, Документы, Диск) и хорошо работает со свежими данными из интернета.",
+      alts: ["ChatGPT", "Perplexity"]
+    },
+    {
+      name: "Gamma", url: "https://gamma.app",
+      tagline: "Презентации и документы за минуту",
+      keywords: ["презентац", "слайд", "доклад", "витр", "лендинг без код", "питч"],
+      why: "Gamma создаёт красивые презентации по текстовому описанию — с дизайном, структурой и картинками. Сильно экономит время.",
+      alts: ["ChatGPT", "Canva AI"]
+    },
+    {
+      name: "Cursor", url: "https://cursor.com",
+      tagline: "Редактор кода со встроенным ИИ",
+      keywords: ["ide", "редактор код", "проект разработ", "большой код", "рефактор", "весь проект", "ide агент"],
+      why: "Cursor — редактор кода с ИИ-агентом, который понимает весь проект и правит много файлов сразу. Выбор для серьёзной разработки.",
+      alts: ["Claude", "GitHub Copilot"]
+    },
+    {
+      name: "GitHub Copilot", url: "https://github.com/features/copilot",
+      tagline: "Автодополнение кода прямо в редакторе",
+      keywords: ["автодополнен", "подсказк код", "в vscode", "в visual studio", "дополн код"],
+      why: "Copilot дописывает код по мере набора прямо в VS Code. Идеален, чтобы писать быстрее, не выходя из редактора.",
+      alts: ["Cursor", "Claude"]
+    },
+    {
+      name: "Julius AI", url: "https://julius.ai",
+      tagline: "Анализ данных и таблиц с графиками",
+      keywords: ["анализ данн", "таблиц", "excel", "график", "диаграмм", "статистик", "csv", "отчёт", "отчет", "дата"],
+      why: "Julius AI загружает ваши таблицы, анализирует их и строит графики по запросу. Отличный аналитик-ассистент без кода.",
+      alts: ["ChatGPT", "Claude"]
+    },
+    {
+      name: "Copy.ai", url: "https://copy.ai",
+      tagline: "Маркетинговые тексты и посты для соцсетей",
+      keywords: ["соцсет", "соц сет", "пост", "инстаграм", "телеграм", "реклам", "маркет", "продающ", "заголов", "контент план", "тик ток", "tiktok", "рилс текст"],
+      why: "Copy.ai заточен под маркетинг: посты, реклама, контент-планы и продающие тексты по шаблонам.",
+      alts: ["ChatGPT", "Claude"]
+    },
+    {
+      name: "Character.AI", url: "https://character.ai",
+      tagline: "Ролевые персонажи и живое общение",
+      keywords: ["пообща", "персонаж", "ролев", "подруг", "друг", "разговор жив", "компаньон", "скучно", "одинок"],
+      why: "Character.AI позволяет общаться с тысячами персонажей и создавать своих. Лучший ИИ для живой ролевой переписки.",
+      alts: ["Replika", "ChatGPT"]
+    },
+  ];
+
+  const UNIVERSAL = TOOLS.find(t => t.name === "ChatGPT");
+
+  const input = document.getElementById("goal");
+  const goBtn = document.getElementById("goBtn");
+  const result = document.getElementById("result");
+
+  function normalize(s) {
+    return s.toLowerCase().replace(/ё/g, "е");
+  }
+
+  function pickTool(query) {
+    const q = normalize(query);
+    let best = null, bestScore = 0;
+    for (const tool of TOOLS) {
+      let score = 0;
+      for (const kw of tool.keywords) {
+        if (q.includes(normalize(kw))) {
+          score += kw.length >= 6 ? 3 : 2;
+        }
+      }
+      if (score > bestScore) { bestScore = score; best = tool; }
+    }
+    return bestScore > 0 ? best : UNIVERSAL;
+  }
+
+  function escapeHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function render(tool, query) {
+    const altCards = tool.alts.map((name, i) => {
+      const alt = TOOLS.find(t => t.name === name);
+      if (!alt) return "";
+      return `
+        <div class="alt" style="animation-delay:${0.15 + i * 0.08}s">
+          <div>
+            <div class="name">${alt.name}</div>
+            <div class="desc">${alt.tagline}</div>
+          </div>
+          <a href="${alt.url}" target="_blank" rel="noopener">Открыть ↗</a>
+        </div>`;
+    }).join("");
+
+    result.innerHTML = `
+      <div class="best">
+        <span class="badge">🏆 Лучший для: «${escapeHtml(query)}»</span>
+        <h2>${tool.name}</h2>
+        <div class="tagline">${tool.tagline}</div>
+        <p class="why">${tool.why}</p>
+        <a class="open-btn" href="${tool.url}" target="_blank" rel="noopener">Открыть ${tool.name} ↗</a>
+      </div>
+      <div class="section-title">Хорошие альтернативы</div>
+      ${altCards}
+      <div class="hint">Не подходит? Опишите задачу подробнее — например «написать пост для Instagram» или «сделать сайт на Python».</div>
+    `;
+  }
+
+  function run() {
+    const query = input.value.trim();
+    if (!query) { input.focus(); return; }
+    render(pickTool(query), query);
+  }
+
+  goBtn.addEventListener("click", run);
+  input.addEventListener("keydown", e => { if (e.key === "Enter") run(); });
+
+  document.querySelectorAll(".chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      input.value = chip.textContent.replace(/^\S+\s/, "");
+      run();
+    });
+  });
+</script>
+</body>
+</html>
