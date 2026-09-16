@@ -98,7 +98,6 @@
   }
 
   .go-btn:hover { transform: translateY(-50%) scale(1.06); }
-  .go-btn:disabled { opacity: .4; cursor: default; }
 
   .chips {
     display: flex;
@@ -150,6 +149,28 @@
     margin-bottom: 14px;
   }
 
+  .match {
+    float: right;
+    text-align: center;
+    margin-left: 16px;
+  }
+
+  .match .num {
+    font-size: 26px;
+    font-weight: 800;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .match .lbl {
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
   .best h2 { font-size: 30px; margin-bottom: 6px; }
   .best .tagline { color: var(--accent2); font-size: 15px; margin-bottom: 14px; }
   .best p.why { color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
@@ -177,10 +198,6 @@
   }
 
   .alt {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 16px;
@@ -189,8 +206,16 @@
     animation: rise .45s ease both;
   }
 
+  .alt .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
   .alt .name { font-weight: 700; font-size: 16px; }
   .alt .desc { color: var(--muted); font-size: 13px; margin-top: 3px; }
+  .alt .pct { color: var(--accent2); font-weight: 700; font-size: 14px; white-space: nowrap; }
   .alt a {
     color: var(--accent2);
     text-decoration: none;
@@ -199,12 +224,34 @@
   }
   .alt a:hover { text-decoration: underline; }
 
+  .bar {
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(124, 92, 255, 0.15);
+    margin-top: 10px;
+    overflow: hidden;
+  }
+
+  .bar i {
+    display: block;
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
   .hint {
     text-align: center;
     color: var(--muted);
     margin-top: 28px;
     font-size: 14px;
     animation: rise .45s ease both;
+  }
+
+  .fallback-note {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 10px;
+    font-style: italic;
   }
 
   @keyframes rise {
@@ -225,7 +272,7 @@
 
   <div class="logo">✦ AI-ПОДБОРЩИК</div>
   <h1>Введите, для чего вам нужен ИИ</h1>
-  <p class="subtitle">Опишите свою задачу — покажем самый подходящий ИИ-инструмент</p>
+  <p class="subtitle">Опишите задачу — найдём самый подходящий ИИ.<br>Понимаю синонимы и опечатки, подбор идёт прямо во время ввода</p>
 
   <div class="input-wrap">
     <input id="goal" type="text" placeholder="Например: писать код, рисовать картинки, переводить тексты…" autocomplete="off">
@@ -257,121 +304,148 @@
       name: "Claude", url: "https://claude.ai",
       tagline: "Лучший для кода, текстов и умных разговоров",
       keywords: ["код", "программ", "разработ", "скрипт", "python", "js", "сайт", "приложен", "текст", "стать", "письм", "сочинен", "эссе", "редактир", "перефраз", "объясн", "учеб", "универ", "домашк", "курсов", "диплом", "резюме", "документ", "анализ текст", "рассказ", "книг"],
-      why: "Claude отлично пишет и объясняет код, хорошо справляется с длинными текстами и документами, даёт развёрнутые и аккуратные ответы. Универсальный выбор №1 для работы с текстом и программированием.",
-      alts: ["ChatGPT", "Gemini"]
+      why: "Claude отлично пишет и объясняет код, хорошо справляется с длинными текстами и документами, даёт развёрнутые и аккуратные ответы. Универсальный выбор №1 для работы с текстом и программированием."
     },
     {
       name: "ChatGPT", url: "https://chatgpt.com",
       tagline: "Универсальный ассистент на все случаи жизни",
       keywords: ["универсальн", "всё", "вопрос", "спросить", "поговор", "пообща", "совет", "помощ", "бытов", "план", "расписан", "идеи", "придума", "мозг", "объясн", "просто", "нович", "разбор"],
-      why: "ChatGPT — самый универсальный ИИ: отвечает на любые вопросы, помогает планировать, придумывает идеи, объясняет сложное простыми словами. Если задача размытая — начните с него.",
-      alts: ["Claude", "Gemini"]
+      why: "ChatGPT — самый универсальный ИИ: отвечает на любые вопросы, помогает планировать, придумывает идеи, объясняет сложное простыми словами. Если задача размытая — начните с него."
     },
     {
       name: "Perplexity", url: "https://perplexity.ai",
       tagline: "ИИ-поиск с ссылками на источники",
       keywords: ["поиск", "найди", "искать", "информаци", "новост", "актуальн", "исследован", "факт", "источник", "справк", "статистик", "где", "когда", "кто такой"],
-      why: "Perplexity ищет в интернете в реальном времени и отвечает со ссылками на источники. Идеален, когда нужна свежая и проверяемая информация, а не ответ «по памяти».",
-      alts: ["Gemini", "ChatGPT"]
+      why: "Perplexity ищет в интернете в реальном времени и отвечает со ссылками на источники. Идеален, когда нужна свежая и проверяемая информация, а не ответ «по памяти»."
     },
     {
       name: "Midjourney", url: "https://midjourney.com",
       tagline: "Топовые художественные изображения",
-      keywords: ["картинк", "рису", "изображ", "арт", "иллюстра", "дизайн", "логотип", "обложк", "концепт", "фото реалист", "эстетик", "wallpaper", "обои"],
-      why: "Midjourney создаёт самые красивые и художественные изображения по текстовому описанию. Выбор №1 для артов, иллюстраций и концептов.",
-      alts: ["FLUX", "DALL·E 3", "Ideogram"]
+      keywords: ["картинк", "рису", "изображ", "арт", "иллюстра", "дизайн", "логотип", "обложк", "концепт", "фото реалист", "эстетик", "wallpaper", "обои", "аватар", "генерир изображ"],
+      why: "Midjourney создаёт самые красивые и художественные изображения по текстовому описанию. Выбор №1 для артов, иллюстраций и концептов."
     },
     {
       name: "FLUX", url: "https://flux-ai.io",
       tagline: "Реалистичный и бесплатный генератор картинок",
       keywords: ["бесплатн картин", "реалист", "фото", "текст на картин", "надпис", "открытк", "быстрый рису"],
-      why: "FLUX даёт фотореалистичные изображения и хорошо рисует текст/надписи на картинках. Есть бесплатные варианты использования.",
-      alts: ["Midjourney", "Stable Diffusion"]
+      why: "FLUX даёт фотореалистичные изображения и хорошо рисует текст/надписи на картинках. Есть бесплатные варианты использования."
     },
     {
       name: "Sora", url: "https://sora.com",
       tagline: "Генерация видео по текстовому описанию",
       keywords: ["видео", "ролик", "клип", "анимац", "фильм", "сгенерируй видео", "movie", "shorts", "рилс"],
-      why: "Sora от OpenAI создаёт видео целиком по текстовому описанию — с движением, светом и сценами. Топовый выбор для генеративного видео.",
-      alts: ["Runway", "Kling AI"]
+      why: "Sora от OpenAI создаёт видео целиком по текстовому описанию — с движением, светом и сценами. Топовый выбор для генеративного видео."
     },
     {
       name: "Runway", url: "https://runwayml.com",
       tagline: "Профессиональное ИИ-видео и монтаж",
       keywords: ["монтаж", "видео редактор", "видео эффект", "видео обработк", "удалить фон видео", "видео инструмент"],
-      why: "Runway — полноценная студия ИИ-видео: генерация, редактирование, удаление фона, эффекты. Выбор для тех, кто работает с видео серьёзно.",
-      alts: ["Sora", "Kling AI"]
+      why: "Runway — полноценная студия ИИ-видео: генерация, редактирование, удаление фона, эффекты. Выбор для тех, кто работает с видео серьёзно."
     },
     {
       name: "Suno", url: "https://suno.com",
       tagline: "Создание песен и музыки по описанию",
       keywords: ["музык", "песн", "трек", "мелоди", "бит", "инструментал", "спой", "пой", "композиц"],
-      why: "Suno генерирует полноценные песни с вокалом и текстом в любом жанре за минуту. Лучший ИИ для музыки.",
-      alts: ["Udio"]
+      why: "Suno генерирует полноценные песни с вокалом и текстом в любом жанре за минуту. Лучший ИИ для музыки."
     },
     {
       name: "ElevenLabs", url: "https://elevenlabs.io",
       tagline: "Реалистичная озвучка и клонирование голоса",
       keywords: ["озвуч", "голос", "диктор", "аудио книг", "текст в речь", "озвон", "клонирован голос", "подкаст озвуч"],
-      why: "ElevenLabs делает самую реалистичную озвучку текста на многих языках, включая русский, и умеет клонировать голос.",
-      alts: ["Speechify"]
+      why: "ElevenLabs делает самую реалистичную озвучку текста на многих языках, включая русский, и умеет клонировать голос."
     },
     {
       name: "DeepL", url: "https://deepl.com",
       tagline: "Самый точный перевод текстов",
       keywords: ["перевод", "перевест", "переведи", "translate", "язык"],
-      why: "DeepL переводит точнее всех, сохраняя стиль и смысл текста. Выбор №1 для перевода документов и статей.",
-      alts: ["Google Translate", "ChatGPT"]
+      why: "DeepL переводит точнее всех, сохраняя стиль и смысл текста. Выбор №1 для перевода документов и статей."
     },
     {
       name: "Gemini", url: "https://gemini.google.com",
       tagline: "ИИ от Google с доступом к актуальным данным",
       keywords: ["гугл", "google", "почт", "gmail", "документ google", "таблиц google", "android", "актуальн"],
-      why: "Gemini глубоко интегрирован с сервисами Google (Gmail, Документы, Диск) и хорошо работает со свежими данными из интернета.",
-      alts: ["ChatGPT", "Perplexity"]
+      why: "Gemini глубоко интегрирован с сервисами Google (Gmail, Документы, Диск) и хорошо работает со свежими данными из интернета."
     },
     {
       name: "Gamma", url: "https://gamma.app",
       tagline: "Презентации и документы за минуту",
-      keywords: ["презентац", "слайд", "доклад", "витр", "лендинг без код", "питч"],
-      why: "Gamma создаёт красивые презентации по текстовому описанию — с дизайном, структурой и картинками. Сильно экономит время.",
-      alts: ["ChatGPT", "Canva AI"]
+      keywords: ["презентац", "слайд", "доклад", "витр", "питч"],
+      why: "Gamma создаёт красивые презентации по текстовому описанию — с дизайном, структурой и картинками. Сильно экономит время."
     },
     {
       name: "Cursor", url: "https://cursor.com",
       tagline: "Редактор кода со встроенным ИИ",
       keywords: ["ide", "редактор код", "проект разработ", "большой код", "рефактор", "весь проект", "ide агент"],
-      why: "Cursor — редактор кода с ИИ-агентом, который понимает весь проект и правит много файлов сразу. Выбор для серьёзной разработки.",
-      alts: ["Claude", "GitHub Copilot"]
+      why: "Cursor — редактор кода с ИИ-агентом, который понимает весь проект и правит много файлов сразу. Выбор для серьёзной разработки."
     },
     {
       name: "GitHub Copilot", url: "https://github.com/features/copilot",
       tagline: "Автодополнение кода прямо в редакторе",
       keywords: ["автодополнен", "подсказк код", "в vscode", "в visual studio", "дополн код"],
-      why: "Copilot дописывает код по мере набора прямо в VS Code. Идеален, чтобы писать быстрее, не выходя из редактора.",
-      alts: ["Cursor", "Claude"]
+      why: "Copilot дописывает код по мере набора прямо в VS Code. Идеален, чтобы писать быстрее, не выходя из редактора."
+    },
+    {
+      name: "Bolt.new", url: "https://bolt.new",
+      tagline: "Создание сайтов и веб-приложений по описанию",
+      keywords: ["созда сайт", "сдела сайт", "лендинг", "веб приложен", "веб-приложен", "верстк", "html", "mvp", "стартап сайт", "интернет магаз", "вебсайт"],
+      why: "Bolt.new генерирует готовые сайты и веб-приложения прямо по текстовому описанию — без настройки окружения. Идеален для быстрого MVP и лендингов."
+    },
+    {
+      name: "Otter.ai", url: "https://otter.ai",
+      tagline: "Транскрибация встреч и лекций в текст",
+      keywords: ["транскрибац", "расшифров", "аудио в текст", "запись встреч", "запись лекц", "конференц", "протокол встреч", "голос в текст"],
+      why: "Otter.ai расшифровывает записи встреч, лекций и интервью в текст с разделением по спикерам. Незаменим для конспектов с разговоров."
+    },
+    {
+      name: "Grammarly", url: "https://grammarly.com",
+      tagline: "Проверка грамотности и стиля текста",
+      keywords: ["грамотн", "орфограф", "пунктуац", "ошибк в текст", "правописан", "проверк текст", "стиль текст"],
+      why: "Grammarly находит грамматические и стилистические ошибки в реальном времени. Выбор, когда важно, чтобы текст был безупречным."
+    },
+    {
+      name: "Notion AI", url: "https://notion.so",
+      tagline: "Умные заметки и база знаний",
+      keywords: ["заметк", "конспект", "база знан", "вики", "организац", "планирован задач", "списк дел", "личн база"],
+      why: "Notion AI помогает структурировать заметки, конспекты и задачи, отвечает по вашей базе знаний. Выбор для личной организации."
+    },
+    {
+      name: "Zapier AI", url: "https://zapier.com",
+      tagline: "Автоматизация рутины между приложениями",
+      keywords: ["автоматизац", "рутин", "воркфлоу", "workflow", "интеграц", "связать приложен", "автоматическ дел"],
+      why: "Zapier AI связывает ваши приложения и автоматизирует рутинные процессы без кода: уведомления, таблицы, рассылки, боты."
     },
     {
       name: "Julius AI", url: "https://julius.ai",
       tagline: "Анализ данных и таблиц с графиками",
       keywords: ["анализ данн", "таблиц", "excel", "график", "диаграмм", "статистик", "csv", "отчёт", "отчет", "дата"],
-      why: "Julius AI загружает ваши таблицы, анализирует их и строит графики по запросу. Отличный аналитик-ассистент без кода.",
-      alts: ["ChatGPT", "Claude"]
+      why: "Julius AI загружает ваши таблицы, анализирует их и строит графики по запросу. Отличный аналитик-ассистент без кода."
     },
     {
       name: "Copy.ai", url: "https://copy.ai",
       tagline: "Маркетинговые тексты и посты для соцсетей",
       keywords: ["соцсет", "соц сет", "пост", "инстаграм", "телеграм", "реклам", "маркет", "продающ", "заголов", "контент план", "тик ток", "tiktok", "рилс текст"],
-      why: "Copy.ai заточен под маркетинг: посты, реклама, контент-планы и продающие тексты по шаблонам.",
-      alts: ["ChatGPT", "Claude"]
+      why: "Copy.ai заточен под маркетинг: посты, реклама, контент-планы и продающие тексты по шаблонам."
     },
     {
       name: "Character.AI", url: "https://character.ai",
       tagline: "Ролевые персонажи и живое общение",
-      keywords: ["пообща", "персонаж", "ролев", "подруг", "друг", "разговор жив", "компаньон", "скучно", "одинок"],
-      why: "Character.AI позволяет общаться с тысячами персонажей и создавать своих. Лучший ИИ для живой ролевой переписки.",
-      alts: ["Replika", "ChatGPT"]
+      keywords: ["персонаж", "ролев", "подруг", "друг", "разговор жив", "компаньон", "скучно", "одинок", "отыгрыш"],
+      why: "Character.AI позволяет общаться с тысячами персонажей и создавать своих. Лучший ИИ для живой ролевой переписки."
     },
+  ];
+
+  // Синонимы: приводим слова пользователя к «корню», который ищем в ключевых словах
+  const SYNONYMS = [
+    ["нарисовать", "рису"], ["рисунок", "рису"], ["нарисуй", "рису"],
+    ["сгенерировать", "генерир"], ["сгенерируй", "генерир"], ["сгенерь", "генерир"],
+    ["создать", "созда"], ["создай", "созда"], ["сделать", "сдела"], ["сделай", "сдела"],
+    ["написать", "пис"], ["напиши", "пис"], ["записать", "пис"],
+    ["перевести", "перевод"], ["переведи", "перевод"], ["переводить", "перевод"],
+    ["спеть", "песн"], ["спой", "песн"],
+    ["поискать", "поиск"], ["поищи", "поиск"], ["найти", "поиск"], ["найди", "поиск"],
+    ["озвучить", "озвуч"], ["озвучь", "озвуч"],
+    ["смонтировать", "монтаж"],
+    ["нарисуйте", "рису"], ["напечатать", "пис"],
   ];
 
   const UNIVERSAL = TOOLS.find(t => t.name === "ChatGPT");
@@ -384,61 +458,145 @@
     return s.toLowerCase().replace(/ё/g, "е");
   }
 
-  function pickTool(query) {
-    const q = normalize(query);
-    let best = null, bestScore = 0;
-    for (const tool of TOOLS) {
+  // Заменяем слова-синонимы на корни
+  function expandSynonyms(q) {
+    for (const [from, to] of SYNONYMS) {
+      q = q.split(from).join(to);
+    }
+    return q;
+  }
+
+  // Расстояние Левенштейна — для прощения опечаток
+  function levenshtein(a, b) {
+    const m = a.length, n = b.length;
+    if (Math.abs(m - n) > 2) return 3;
+    const d = Array.from({ length: m + 1 }, (_, i) => [i, ...Array(n).fill(0)]);
+    for (let j = 0; j <= n; j++) d[0][j] = j;
+    for (let i = 1; i <= m; i++)
+      for (let j = 1; j <= n; j++)
+        d[i][j] = Math.min(
+          d[i - 1][j] + 1,
+          d[i][j - 1] + 1,
+          d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+        );
+    return d[m][n];
+  }
+
+  // Умный подбор: возвращает отсортированный список {tool, score}
+  function rankTools(query) {
+    const q = expandSynonyms(normalize(query));
+    const tokens = q.split(/[^a-zа-я0-9]+/i).filter(w => w.length >= 4);
+
+    const scored = TOOLS.map(tool => {
       let score = 0;
+      const matched = new Set();
+
       for (const kw of tool.keywords) {
-        if (q.includes(normalize(kw))) {
-          score += kw.length >= 6 ? 3 : 2;
+        const nkw = normalize(kw);
+        // 1) прямое вхождение ключевого слова в запрос
+        if (q.includes(nkw)) {
+          score += nkw.length >= 6 ? 3 : 2;
+          matched.add(kw);
+          continue;
+        }
+        // 2) нечёткое совпадение по словам (прощаем 1–2 опечатки)
+        if (nkw.includes(" ")) continue; // многословные — только по вхождению
+        for (const tok of tokens) {
+          const tol = tok.length >= 8 ? 2 : 1;
+          if (tok.length >= 5 && nkw.length >= 4 &&
+              levenshtein(tok, nkw) <= tol && !matched.has(kw)) {
+            // длинное слово с 1-2 опечатками — сильный сигнал (перивести ≈ перевести)
+            score += tok.length >= 8 ? 3 : 1;
+            matched.add(kw);
+            break;
+          }
         }
       }
-      if (score > bestScore) { bestScore = score; best = tool; }
-    }
-    return bestScore > 0 ? best : UNIVERSAL;
+      return { tool, score };
+    });
+
+    scored.sort((a, b) => b.score - a.score);
+    return scored;
   }
 
   function escapeHtml(s) {
     return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
 
-  function render(tool, query) {
-    const altCards = tool.alts.map((name, i) => {
-      const alt = TOOLS.find(t => t.name === name);
-      if (!alt) return "";
+  function percentOf(score) {
+    // Калибровка: 1 балл ≈ 60%, дальше растёт, потолок 98%
+    return Math.min(98, Math.round(50 + score * 10));
+  }
+
+  function render(query) {
+    const ranked = rankTools(query);
+    const top = ranked[0];
+
+    // Ничего не нашлось — универсальный вариант с пояснением
+    if (top.score === 0) {
+      result.innerHTML = `
+        <div class="best">
+          <span class="badge">🤖 Универсальный выбор для: «${escapeHtml(query)}»</span>
+          <h2>${UNIVERSAL.name}</h2>
+          <div class="tagline">${UNIVERSAL.tagline}</div>
+          <p class="why">${UNIVERSAL.why}</p>
+          <a class="open-btn" href="${UNIVERSAL.url}" target="_blank" rel="noopener">Открыть ${UNIVERSAL.name} ↗</a>
+          <p class="fallback-note">Точное совпадение не найдено — попробуйте описать задачу другими словами, например «сделать сайт», «озвучить текст», «написать пост».</p>
+        </div>`;
+      return;
+    }
+
+    const bestPct = percentOf(top.score);
+    const alts = ranked.filter(r => r.score > 0).slice(1, 3);
+
+    const altCards = alts.map((r, i) => {
+      const pct = Math.max(45, Math.round(bestPct * r.score / top.score));
       return `
         <div class="alt" style="animation-delay:${0.15 + i * 0.08}s">
-          <div>
-            <div class="name">${alt.name}</div>
-            <div class="desc">${alt.tagline}</div>
+          <div class="row">
+            <div>
+              <div class="name">${r.tool.name}</div>
+              <div class="desc">${r.tool.tagline}</div>
+            </div>
+            <a href="${r.tool.url}" target="_blank" rel="noopener">Открыть ↗</a>
           </div>
-          <a href="${alt.url}" target="_blank" rel="noopener">Открыть ↗</a>
+          <div class="bar"><i style="width:${pct}%"></i></div>
         </div>`;
     }).join("");
 
     result.innerHTML = `
       <div class="best">
         <span class="badge">🏆 Лучший для: «${escapeHtml(query)}»</span>
-        <h2>${tool.name}</h2>
-        <div class="tagline">${tool.tagline}</div>
-        <p class="why">${tool.why}</p>
-        <a class="open-btn" href="${tool.url}" target="_blank" rel="noopener">Открыть ${tool.name} ↗</a>
+        <div class="match"><div class="num">${bestPct}%</div><div class="lbl">совпадение</div></div>
+        <h2>${top.tool.name}</h2>
+        <div class="tagline">${top.tool.tagline}</div>
+        <p class="why">${top.tool.why}</p>
+        <a class="open-btn" href="${top.tool.url}" target="_blank" rel="noopener">Открыть ${top.tool.name} ↗</a>
       </div>
-      <div class="section-title">Хорошие альтернативы</div>
-      ${altCards}
+      ${alts.length ? `<div class="section-title">Хорошие альтернативы</div>${altCards}` : ""}
       <div class="hint">Не подходит? Опишите задачу подробнее — например «написать пост для Instagram» или «сделать сайт на Python».</div>
     `;
   }
 
+  let debounceTimer = null;
+
   function run() {
     const query = input.value.trim();
-    if (!query) { input.focus(); return; }
-    render(pickTool(query), query);
+    if (!query) { result.innerHTML = ""; return; }
+    render(query);
   }
 
-  goBtn.addEventListener("click", run);
-  input.addEventListener("keydown", e => { if (e.key === "Enter") run(); });
+  // Живой поиск прямо во время ввода
+  input.addEventListener("input", () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(run, 250);
+  });
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") { clearTimeout(debounceTimer); run(); }
+  });
+
+  goBtn.addEventListener("click", () => { clearTimeout(debounceTimer); run(); });
 
   document.querySelectorAll(".chip").forEach(chip => {
     chip.addEventListener("click", () => {
